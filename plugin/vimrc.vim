@@ -28,6 +28,8 @@ set autowrite           " Automatically save before commands like :next and :mak
 set runtimepath+=/usr/local/etc/vim
 set mouse=
 
+set vb t_vb=            " disable annoying double-bell escape beep
+
 " Don't left-justify # comments, it's annoying
 inoremap # X#
 
