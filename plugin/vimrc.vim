@@ -7,8 +7,6 @@ set backspace=2         " allow backspacing over everything in insert mode
 set autoindent          " always set autoindenting on
 set smartindent         " smart auto-indenting for programming
 set textwidth=75        " Wrap words at 75 chars by default
-au FileType mail set textwidth=70 " But wrap for email at 70 chars
-au FileType xml set noexpandtab
 set nobackup            " Don't keep a backup file
 set viminfo='20,\"50    " read/write a .viminfo file, don't store more than
                         " 50 lines of registers
@@ -16,8 +14,9 @@ set history=50          " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
 set expandtab           " insert spaces, not tabs
 set shiftwidth=4
-set tabstop=8
+set tabstop=4
 set softtabstop=4
+set cursorline
 "set digraph             " Enables input of special characters
 set list listchars=tab:»·,trail:·,precedes:«,extends:»
 set wildmenu            " Status line to show possible completions of commands
@@ -57,13 +56,15 @@ if has("autocmd")
     au BufNewFile,BufRead * set formatoptions=tcql nocindent comments&
     au BufNewFile,BufRead *.pl,*.pm set formatoptions=croql smartindent comments=srb:#,mb:#,el:#,:#
     au BufNewFile,BufRead *.c,*.cpp,*.h set formatoptions=croql noexpandtab cindent comments=sr:/*,mb:*,el:*/,:// softtabstop=8 shiftwidth=8
-    au BufNewFile,BufRead *.html,*.tmpl,*.xml,*.css,*.js set formatoptions=croql softtabstop=2 shiftwidth=2
+    au BufNewFile,BufRead *.html,*.tmpl,*.xml,*.css set formatoptions=croql softtabstop=2 shiftwidth=2
+    au BufNewFile,BufRead *.ts set syntax=javascript expandtab formatoptions=croql cinwords=if,elif,else,for,while,try,except,finally,def,class
     au BufNewFile,BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
+    au FileType xml set noexpandtab
+    au FileType mail set textwidth=70 " But wrap for email at 70 chars
   augroup END
 endif " has ("autocmd")
 
 highlight SpecialKey ctermfg=darkblue
-"highlight Comment ctermfg=darkgrey ctermbg=black guifg=#555555 guibg=black gui=italic
 highlight Comment ctermfg=darkgrey guifg=#555555 gui=italic
 highlight StatusLineNC ctermfg=black ctermbg=white guifg=black guibg=white
 highlight StatusLine ctermfg=white
@@ -73,8 +74,10 @@ highlight Search ctermfg=8 ctermbg=1 guibg=red guifg=white
 let mapleader = "\<Space>"
 nnoremap <Leader>w :w<CR>
 
-nmap <C-J> <C-W>j<C-W>_
-nmap <C-K> <C-W>k<C-W>_
+nmap <C-J> <C-W>j
+nmap <C-K> <C-W>k
+"nmap <C-J> <C-W>j"<C-W>_
+"nmap <C-K> <C-W>k"<C-W>_
 nmap <C-H> :tabnext<cr>
 nmap <C-L> :tabprevious<cr>
 nmap <C-N> :tabnew<cr>
@@ -94,3 +97,9 @@ let g:solarized_visibility = "high"
 let g:solarized_contrast = "high"
 colorscheme solarized
 
+set modeline
+set modelines=5
+set clipboard=unnamed
+
+" Reselect and re-yank any text that is pasted in visual mode
+xnoremap p pgvy
